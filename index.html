@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASM CONVENT SCHOOL · Couple Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pink-soft: #f9e0e8;
+            --pink-light: #fbd3df;
+            --pink: #f5a3c7;
+            --pink-deep: #e87fa9;
+            --pink-glow: rgba(245, 163, 199, 0.35);
+            --glass-bg: rgba(255, 255, 255, 0.22);
+            --glass-border: rgba(255, 255, 255, 0.40);
+            --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            --text-dark: #2e1c27;
+            --text-soft: #5a3f4b;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(145deg, #fce4ec 0%, #f8d0df 40%, #f5c0d4 100%);
+            min-height: 100vh;
+            padding: 0 20px 60px;
+            color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ---- Animated background particles (hearts) ---- */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.20;
+            animation: floatHeart linear infinite;
+            user-select: none;
+        }
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) scale(0.6) rotate(0deg);
+                opacity: 0.15;
+            }
+            50% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ---- Glassmorphism card base ---- */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+            border-radius: 32px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .glass:hover {
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+                0 0 30px var(--pink-glow);
+            transform: translateY(-3px);
+        }
+
+        /* ---- Layout container ---- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ---- Header / school name ---- */
+        .school-header {
+            text-align: center;
+            padding: 28px 0 6px;
+            position: relative;
+        }
+        .school-name {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: clamp(1.6rem, 5.5vw, 3.8rem);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #b34a6e, #e87fa9, #b34a6e);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmerGlow 4s ease-in-out infinite alternate;
+            filter: drop-shadow(0 4px 30px rgba(232, 127, 169, 0.30));
+            text-shadow: 0 0 40px rgba(245, 163, 199, 0.20);
+        }
+        @keyframes shimmerGlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .sub-brand {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            font-size: clamp(1.4rem, 4vw, 2.8rem);
+            letter-spacing: 6px;
+            color: #b34a6e;
+            opacity: 0.80;
+            margin-top: -6px;
+            text-shadow: 0 0 30px rgba(245, 163, 199, 0.25);
+            background: linear-gradient(135deg, #b34a6e, #d47a9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 20px rgba(232, 127, 169, 0.20));
+        }
+
+        /* ---- Hamburger / nav ---- */
+        .nav-toggle {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 999;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.50);
+            border-radius: 60px;
+            padding: 10px 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            transition: 0.25s;
+        }
+        .nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.40);
+            box-shadow: 0 0 30px var(--pink-glow);
+        }
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 2.5px;
+            background: var(--text-dark);
+            border-radius: 10px;
+            transition: 0.3s;
+            transform-origin: center;
+        }
+        .nav-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .nav-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ---- slide menu ---- */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 998;
+            background: rgba(0, 0, 0, 0.20);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .slide-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 270px;
+            height: 100%;
+            z-index: 1000;
+            background: rgba(255, 248, 250, 0.88);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-right: 1px solid rgba(255, 255, 255, 0.50);
+            box-shadow: 8px 0 40px rgba(0, 0, 0, 0.06);
+            padding: 32px 24px;
+            transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .slide-menu.open {
+            left: 0;
+        }
+
+        .slide-menu .menu-brand {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            margin-bottom: 14px;
+        }
+        .slide-menu .menu-item {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: 12px 14px;
+            border-radius: 16px;
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            background: transparent;
+            border: none;
+            text-align: left;
+            width: 100%;
+        }
+        .slide-menu .menu-item:hover {
+            background: rgba(245, 163, 199, 0.18);
+            color: var(--text-dark);
+        }
+        .slide-menu .menu-item.active-page {
+            background: rgba(245, 163, 199, 0.25);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* ---- Pages ---- */
+        .page {
+            display: none;
+            animation: fadeSlide 0.50s ease;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---- Home page ---- */
+        .home-headline {
+            font-family: var(--font-heading);
+            font-size: clamp(2.4rem, 7vw, 4.8rem);
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-dark);
+            margin: 40px 0 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 50px rgba(245, 163, 199, 0.20);
+        }
+        .home-headline span {
+            background: linear-gradient(135deg, #b34a6e, #e87fa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .couple-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            margin: 32px 0 20px;
+        }
+
+        .couple-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 32px;
+            padding: 26px 24px 22px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            transition: transform 0.30s ease, box-shadow 0.35s ease;
+            animation: cardAppear 0.5s ease backwards;
+        }
+        .couple-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 16px 48px rgba(232, 127, 169, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+                0 0 40px rgba(245, 163, 199, 0.08);
+        }
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Image + Name Pair Layout */
+        .couple-images {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .profile-pic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+        .profile-pic img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 20px rgba(232, 127, 169, 0.25);
+            transition: 0.3s ease;
+            background: #fce4ec;
+        }
+        .profile-pic img.default-img {
+            opacity: 0.6;
+            filter: grayscale(0.2);
+        }
+        .profile-pic .name {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        .profile-pic .label-role {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-soft);
+            opacity: 0.6;
+            font-weight: 600;
+        }
+
+        .couple-card .desc {
+            font-size: 0.95rem;
+            color: var(--text-soft);
+            line-height: 1.6;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            margin-top: 8px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-soft);
+            padding: 50px 20px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .empty-message span {
+            font-size: 2.6rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* ---- Admin Panel pages ---- */
+        .admin-login-box,
+        .admin-dashboard-box {
+            max-width: 520px;
+            margin: 60px auto;
+            padding: 36px 32px 40px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.50);
+            border-radius: 44px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+        }
+        .admin-login-box h2,
+        .admin-dashboard-box h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 4px;
+            color: var(--text-dark);
+        }
+        .admin-login-box .sub,
+        .admin-dashboard-box .sub {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            opacity: 0.7;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(4px);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: 0.25s;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--pink-deep);
+            box-shadow: 0 0 0 4px rgba(245, 163, 199, 0.20);
+            background: rgba(255, 255, 255, 0.55);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-group .file-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .form-group .file-input-wrapper input[type="file"] {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px dashed rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.85rem;
+        }
+        .form-group .image-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: #f0d6e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-soft);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+        .form-group .image-preview img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .input-with-toggle {
+            position: relative;
+        }
+        .input-with-toggle input {
+            padding-right: 52px;
+        }
+        .toggle-pwd {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: var(--text-soft);
+            opacity: 0.6;
+            padding: 4px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 40px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.25s;
+            background: rgba(255, 255, 255, 0.30);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--text-dark);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e87fa9, #d4628f);
+            border-color: #e87fa9;
+            color: #fff;
+            box-shadow: 0 6px 24px rgba(232, 127, 169, 0.30);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(232, 127, 169, 0.40);
+            background: linear-gradient(135deg, #f08cb5, #d4628f);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(6px);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.45);
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: rgba(200, 70, 70, 0.15);
+            border-color: rgba(200, 70, 70, 0.2);
+            color: #9a3e3e;
+        }
+        .btn-danger:hover {
+            background: rgba(200, 70, 70, 0.25);
+        }
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 24px 0 12px;
+        }
+        .admin-actions .btn {
+            flex: 1 1 auto;
+        }
+
+        .toast {
+            position: fixed;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: rgba(255, 255, 255, 0.80);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 16px 32px;
+            border-radius: 60px;
+            font-weight: 500;
+            color: var(--text-dark);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+            z-index: 2000;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+            font-size: 0.95rem;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            border-left: 4px solid #7bbf7b;
+        }
+        .toast.error {
+            border-left: 4px solid #e07a7a;
+        }
+
+        .login-error {
+            color: #b34a4a;
+            font-size: 0.85rem;
+            margin-top: -8px;
+            margin-bottom: 14px;
+            display: none;
+            background: rgba(200, 70, 70, 0.06);
+            padding: 10px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(200, 70, 70, 0.08);
+        }
+        .login-error.show {
+            display: block;
+        }
+
+        .file-preview-grid {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ---- responsive tweaks ---- */
+        @media (max-width: 640px) {
+            .couple-grid {
+                grid-template-columns: 1fr;
+            }
+            .admin-login-box,
+            .admin-dashboard-box {
+                padding: 28px 18px 32px;
+            }
+            .slide-menu {
+                width: 240px;
+                left: -250px;
+            }
+            .slide-menu.open {
+                left: 0;
+            }
+            .school-name {
+                letter-spacing: 2px;
+            }
+            .nav-toggle {
+                top: 18px;
+                left: 18px;
+                padding: 8px 12px;
+            }
+            .nav-toggle span {
+                width: 20px;
+                height: 2px;
+            }
+            .home-headline {
+                margin-top: 24px;
+            }
+            .profile-pic img {
+                width: 65px;
+                height: 65px;
+            }
+            .toast {
+                width: calc(100% - 40px);
+                text-align: center;
+                padding: 14px 20px;
+                font-size: 0.85rem;
+                top: 20px;
+            }
+            .couple-images {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
+
+        /* ---- utility ---- */
+        .text-center {
+            text-align: center;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--pink);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ---- Floating hearts particles ---- -->
+    <div class="particles" id="particles"></div>
+
+    <!-- ---- Toast notification ---- -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ---- Hamburger toggle ---- -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- ---- Overlay ---- -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- ---- Slide menu ---- -->
+    <nav class="slide-menu" id="slideMenu">
+        <div class="menu-brand">✦ ASM</div>
+        <button class="menu-item active-page" data-page="home">Home</button>
+        <button class="menu-item" data-page="admin">Admin Panel</button>
+        <div style="flex:1;"></div>
+        <div style="font-size:0.7rem;color:var(--text-soft);opacity:0.4;padding-top:12px;border-top:1px solid rgba(0,0,0,0.04);">
+            Couple Day 2026
+        </div>
+    </nav>
+
+    <!-- ---- Main container ---- -->
+    <div class="container">
+
+        <!-- School header -->
+        <header class="school-header">
+            <div class="school-name">ASM CONVENT SCHOOL, SUKHPURA, BALLIA</div>
+            <div class="sub-brand">#RANDICOUPLE</div>
+        </header>
+
+        <!-- ========== HOME PAGE ========== -->
+        <section class="page active" id="page-home">
+            <h1 class="home-headline"><span>💗 COUPLE DAY 💗</span></h1>
+            <div class="couple-grid" id="coupleGrid">
+                <!-- Couples will be rendered here by JS -->
+            </div>
+        </section>
+
+        <!-- ========== ADMIN PAGE ========== -->
+        <section class="page" id="page-admin">
+            <!-- Login screen -->
+            <div id="adminLogin" class="admin-login-box">
+                <h2>✦ Admin Panel</h2>
+                <div class="sub">Enter credentials to continue</div>
+                <div class="login-error" id="loginError">Incorrect username or password.</div>
+                <div class="form-group">
+                    <label for="loginUser">Username</label>
+                    <input type="text" id="loginUser" placeholder="Admin" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="off" />
+                        <button class="toggle-pwd" id="togglePwdBtn" type="button" aria-label="Show password">👁</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" id="loginBtn">Log In</button>
+            </div>
+
+            <!-- Dashboard (hidden until login) -->
+            <div id="adminDashboard" class="admin-dashboard-box" style="display:none;">
+                <h2>✦ Admin Panel</h2>
+                <div class="sub">Manage your couples</div>
+
+                <button class="btn btn-primary btn-block" id="showAddFormBtn">+ ADD NEW COUPLE</button>
+
+                <!-- Add form (hidden by default) -->
+                <div id="addForm" style="display:none;margin-top:24px;">
+                    <div style="font-weight:600;font-size:1.2rem;margin-bottom:12px;">Add New Couple</div>
+                    
+                    <!-- Girl Section -->
+                    <div class="form-group">
+                        <label>👩 Name of Girl</label>
+                        <input type="text" id="girlName" placeholder="e.g. Aditi" />
+                    </div>
+                    <div class="form-group">
+                        <label>🖼️ Girl's Image</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="girlImageInput" accept="image/*" />
+                            <div class="image-preview" id="girlImagePreview">🌸</div>
+                        </div>
+                    </div>
+
+                    <!-- Boy Section -->
+                    <div class="form-group">
+                        <label>👨 Name of Boy</label>
+                        <input type="text" id="boyName" placeholder="e.g. Aryan" />
+                    </div>
+                    <div class="form-group">
+                        <label>🖼️ Boy's Image</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="boyImageInput" accept="image/*" />
+                            <div class="image-preview" id="boyImagePreview">🌻</div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label>📝 Description</label>
+                        <textarea id="coupleDesc" placeholder="Write something about them…"></textarea>
+                    </div>
+
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <button class="btn btn-primary" id="addCoupleBtn" style="flex:1;">ADD COUPLE</button>
+                        <button class="btn btn-secondary" id="cancelAddBtn">Cancel</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
+                    <button class="btn btn-secondary btn-sm" id="refreshHomeBtn">🔄 Refresh Home</button>
+                    <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
+                </div>
+                <div style="margin-top:12px;font-size:0.75rem;color:var(--text-soft);opacity:0.4;">
+                    Data is saved locally in your browser (localStorage).
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- Data layer ----
+            const STORAGE_KEY = 'asm_couple_data';
+            let couples = [];
+
+            // Default placeholder images (SVG data URIs for a clean silhouette)
+            const DEFAULT_AVATAR_GIRL = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23f9d4e0' /%3E%3Ccircle cx='50' cy='35' r='18' fill='%23e8a9b9' /%3E%3Cpath d='M50 60 C30 60 25 80 25 90 L75 90 C75 80 70 60 50 60Z' fill='%23e8a9b9' /%3E%3C/svg%3E";
+            const DEFAULT_AVATAR_BOY = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23d4e3f9' /%3E%3Ccircle cx='50' cy='35' r='18' fill='%237ba3c9' /%3E%3Cpath d='M50 60 C30 60 25 80 25 90 L75 90 C75 80 70 60 50 60Z' fill='%237ba3c9' /%3E%3C/svg%3E";
+
+            function loadCouples() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (Array.isArray(parsed)) couples = parsed;
+                        else couples = [];
+                    } else {
+                        // Start with empty array (no example)
+                        couples = [];
+                        saveCouples();
+                    }
+                } catch (_) {
+                    couples = [];
+                }
+                // ensure each has required fields
+                couples = couples.filter(c => c && typeof c === 'object' && c.girl && c.boy);
+                couples.forEach(c => {
+                    if (!c.description) c.description = '';
+                    if (!c.girlImage) c.girlImage = DEFAULT_AVATAR_GIRL;
+                    if (!c.boyImage) c.boyImage = DEFAULT_AVATAR_BOY;
+                });
+                saveCouples();
+            }
+
+            function saveCouples() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(couples));
+            }
+
+            function addCouple(girl, boy, description, girlImage, boyImage) {
+                const clean = {
+                    girl: girl.trim(),
+                    boy: boy.trim(),
+                    description: description.trim() || 'No description provided.',
+                    girlImage: girlImage || DEFAULT_AVATAR_GIRL,
+                    boyImage: boyImage || DEFAULT_AVATAR_BOY
+                };
+                couples.push(clean);
+                saveCouples();
+                renderCouples();
+                showToast('✨ Couple added successfully!', 'success');
+            }
+
+            // ---- Render ----
+            function renderCouples() {
+                const grid = document.getElementById('coupleGrid');
+                if (!grid) return;
+                if (couples.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-message">
+                            <span>💗</span>
+                            No couples have been added yet
+                        </div>
+                    `;
+                    return;
+                }
+                let html = '';
+                couples.forEach((c, idx) => {
+                    const delay = (idx % 6) * 50;
+                    html += `
+                        <div class="couple-card" style="animation-delay:${delay}ms;">
+                            <div class="couple-images">
+                                <div class="profile-pic">
+                                    <img src="${c.girlImage || DEFAULT_AVATAR_GIRL}" alt="${c.girl}" loading="lazy" />
+                                    <div class="label-role">🤍 COUPLE GIRL</div>
+                                    <div class="name">${escapeHtml(c.girl)}</div>
+                                </div>
+                                <div class="profile-pic">
+                                    <img src="${c.boyImage || DEFAULT_AVATAR_BOY}" alt="${c.boy}" loading="lazy" />
+                                    <div class="label-role">🤍 COUPLE BOY</div>
+                                    <div class="name">${escapeHtml(c.boy)}</div>
+                                </div>
+                            </div>
+                            <div class="desc">“${escapeHtml(c.description)}”</div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return String(text).replace(/[&<>"']/g, m => map[m] || m);
+            }
+
+            // ---- Image Preview helpers ----
+            function setupImagePreview(inputId, previewId) {
+                const input = document.getElementById(inputId);
+                const preview = document.getElementById(previewId);
+                if (!input || !preview) return;
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(ev) {
+                            preview.innerHTML = `<img src="${ev.target.result}" alt="preview" />`;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.innerHTML = inputId.includes('girl') ? '🌸' : '🌻';
+                    }
+                });
+            }
+
+            function getImageDataUrl(inputId) {
+                return new Promise((resolve) => {
+                    const input = document.getElementById(inputId);
+                    const file = input.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            resolve(e.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        resolve(null);
+                    }
+                });
+            }
+
+            // ---- Toast ----
+            let toastTimer = null;
+
+            function showToast(message, type) {
+                const el = document.getElementById('toast');
+                if (!el) return;
+                el.textContent = message;
+                el.className = 'toast ' + (type || '');
+                void el.offsetWidth;
+                el.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    el.classList.remove('show');
+                }, 3000);
+            }
+
+            // ---- Page navigation ----
+            const pages = {
+                home: document.getElementById('page-home'),
+                admin: document.getElementById('page-admin'),
+            };
+
+            function navigateTo(pageId) {
+                Object.keys(pages).forEach(key => {
+                    const p = pages[key];
+                    if (p) p.classList.toggle('active', key === pageId);
+                });
+                document.querySelectorAll('.slide-menu .menu-item').forEach(btn => {
+                    btn.classList.toggle('active-page', btn.dataset.page === pageId);
+                });
+                closeMenu();
+                if (pageId === 'admin') {
+                    const isLoggedIn = sessionStorage.getItem('asm_admin_logged') === 'true';
+                    document.getElementById('adminLogin').style.display = isLoggedIn ? 'none' : 'block';
+                    document.getElementById('adminDashboard').style.display = isLoggedIn ? 'block' : 'none';
+                    if (isLoggedIn) {
+                        loadCouples();
+                        renderCouples();
+                    }
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ---- Menu controls ----
+            const menuToggle = document.getElementById('navToggle');
+            const slideMenu = document.getElementById('slideMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+
+            function toggleMenu(force) {
+                const open = (force !== undefined) ? force : !slideMenu.classList.contains('open');
+                slideMenu.classList.toggle('open', open);
+                menuOverlay.classList.toggle('active', open);
+                menuToggle.classList.toggle('open', open);
+            }
+
+            function closeMenu() { toggleMenu(false); }
+
+            menuToggle.addEventListener('click', () => toggleMenu());
+            menuOverlay.addEventListener('click', closeMenu);
+
+            document.querySelectorAll('.slide-menu .menu-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = this.dataset.page;
+                    if (page === 'home') navigateTo('home');
+                    else if (page === 'admin') navigateTo('admin');
+                });
+            });
+
+            // ---- Admin login ----
+            const loginUser = document.getElementById('loginUser');
+            const loginPass = document.getElementById('loginPass');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            function doLogin() {
+                const user = loginUser.value.trim();
+                const pass = loginPass.value.trim();
+                if (user === 'Admin' && pass === 'Admin123') {
+                    loginError.classList.remove('show');
+                    sessionStorage.setItem('asm_admin_logged', 'true');
+                    document.getElementById('adminLogin').style.display = 'none';
+                    document.getElementById('adminDashboard').style.display = 'block';
+                    loadCouples();
+                    renderCouples();
+                    showToast('✅ Welcome, Admin!', 'success');
+                } else {
+                    loginError.classList.add('show');
+                    loginPass.value = '';
+                    loginPass.focus();
+                    showToast('❌ Invalid credentials', 'error');
+                }
+            }
+
+            loginBtn.addEventListener('click', doLogin);
+            loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+            loginUser.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginPass.focus(); });
+
+            // ---- Toggle password visibility ----
+            document.getElementById('togglePwdBtn').addEventListener('click', function() {
+                const input = loginPass;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '🙈';
+                } else {
+                    input.type = 'password';
+                    this.textContent = '👁';
+                }
+            });
+
+            // ---- Add couple form ----
+            const showAddBtn = document.getElementById('showAddFormBtn');
+            const addForm = document.getElementById('addForm');
+            const cancelAddBtn = document.getElementById('cancelAddBtn');
+            const girlInput = document.getElementById('girlName');
+            const boyInput = document.getElementById('boyName');
+            const descInput = document.getElementById('coupleDesc');
+            const addBtn = document.getElementById('addCoupleBtn');
+
+            setupImagePreview('girlImageInput', 'girlImagePreview');
+            setupImagePreview('boyImageInput', 'boyImagePreview');
+
+            showAddBtn.addEventListener('click', () => {
+                addForm.style.display = 'block';
+                showAddBtn.style.display = 'none';
+                girlInput.focus();
+            });
+
+            cancelAddBtn.addEventListener('click', () => {
+                addForm.style.display = 'none';
+                showAddBtn.style.display = 'block';
+                girlInput.value = '';
+                boyInput.value = '';
+                descInput.value = '';
+                document.getElementById('girlImageInput').value = '';
+                document.getElementById('boyImageInput').value = '';
+                document.getElementById('girlImagePreview').innerHTML = '🌸';
+                document.getElementById('boyImagePreview').innerHTML = '🌻';
+            });
+
+            async function handleAddCouple() {
+                const girl = girlInput.value.trim();
+                const boy = boyInput.value.trim();
+                const desc = descInput.value.trim();
+                if (!girl || !boy) {
+                    showToast('❌ Please fill in both names.', 'error');
+                    return;
+                }
+
+                const girlImage = await getImageDataUrl('girlImageInput');
+                const boyImage = await getImageDataUrl('boyImageInput');
+
+                addCouple(girl, boy, desc, girlImage, boyImage);
+                girlInput.value = '';
+                boyInput.value = '';
+                descInput.value = '';
+                document.getElementById('girlImageInput').value = '';
+                document.getElementById('boyImageInput').value = '';
+                document.getElementById('girlImagePreview').innerHTML = '🌸';
+                document.getElementById('boyImagePreview').innerHTML = '🌻';
+                addForm.style.display = 'none';
+                showAddBtn.style.display = 'block';
+            }
+
+            addBtn.addEventListener('click', handleAddCouple);
+
+            // ---- Logout ----
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('asm_admin_logged');
+                document.getElementById('adminLogin').style.display = 'block';
+                document.getElementById('adminDashboard').style.display = 'none';
+                loginUser.value = '';
+                loginPass.value = '';
+                loginError.classList.remove('show');
+                showToast('🔒 Logged out', '');
+                navigateTo('home');
+            });
+
+            // ---- Refresh home from dashboard ----
+            document.getElementById('refreshHomeBtn').addEventListener('click', function() {
+                loadCouples();
+                renderCouples();
+                showToast('🔄 Refreshed', '');
+            });
+
+            // ---- Init ----
+            loadCouples();
+            renderCouples();
+
+            // ---- Floating hearts ----
+            function createParticles() {
+                const container = document.getElementById('particles');
+                if (!container) return;
+                const symbols = ['♥', '♡', '✦', '✧', '♥', '♡'];
+                for (let i = 0; i < 28; i++) {
+                    const el = document.createElement('span');
+                    el.className = 'particle';
+                    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    const size = 14 + Math.random() * 28;
+                    el.style.fontSize = size + 'px';
+                    el.style.left = Math.random() * 100 + '%';
+                    el.style.animationDuration = (18 + Math.random() * 28) + 's';
+                    el.style.animationDelay = (Math.random() * 30) + 's';
+                    el.style.opacity = 0.1 + Math.random() * 0.25;
+                    container.appendChild(el);
+                }
+            }
+            createParticles();
+
+            // ---- URL hash routing ----
+            if (window.location.hash === '#admin') {
+                navigateTo('admin');
+            }
+            window.addEventListener('hashchange', function() {
+                const hash = window.location.hash.replace('#', '');
+                if (hash === 'admin') navigateTo('admin');
+                else if (hash === 'home') navigateTo('home');
+            });
+
+            window.__asm = { couples, addCouple, renderCouples, loadCouples, saveCouples, navigateTo };
+
+        })();
+    </script>
+
+</body>
+</html>
